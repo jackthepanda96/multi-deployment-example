@@ -27,7 +27,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.0
       env:
-        DBUSER: ${{ secrets.DBUSER }}
+        DB_USER: ${{ secrets.DBUSER }}
         # DBPASS: ${{ secrets.DBPASS }}
         # DBPORT: ${{ secrets.DBPORT }}
         # DBNAME: ${{ secrets.DBNAME }}
@@ -36,9 +36,10 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.key }}
         port: ${{ secrets.PORT }}
-        envs: DBUSER
+        envs: DB_USER
         script: |
-          export DBUSER=$DBUSER
+          export DBUSER=$DB_USER
+          echo $DBUSER
           # export DBPASS=$DBPASS
           # export DBPORT=$DBPORT
           # export DBNAME=$DBNAME
