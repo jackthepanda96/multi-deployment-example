@@ -1,0 +1,22 @@
+name: "deploy action"
+on: 
+  push:
+    branches: 
+      [main]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.0
+      env:
+        DBHOST: ${{ secret.DBHOST }}
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.key }}
+        port: ${{ secrets.PORT }}
+        script: |
+          touch tulisan.txt
+          echo $DBHOST >> tulisan.txt
