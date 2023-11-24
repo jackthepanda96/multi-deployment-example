@@ -1,0 +1,82 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 'passku'
+      MYSQL_DATABASE: 'db_sample'
+    networks:
+      - mynet
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "root",  "-ppassku", "-e", "show databases;"]
+      interval: 10s 
+  cache:
+    image: redis:7.2-alpine
+    environment:
+      REDIS_PASSWORD: rpassword
+    networks:
+      - mynet
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "rpassword", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - mynet
+    ports:
+      - '27017:27017'
+    healthcheck:
+      test: [
+        "CMD",
+        "mongo",
+        "--quiet",
+        "127.0.0.1/test",
+        "--eval",
+        "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'",
+      ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+      cache:
+        condition: service_healthy
+        required: true
+      mongo:
+        condition: service_started
+        required: true
+    environment:
+      - DBUSER=root
+      - DBPASS=passku
+      - DBHOST=db
+      - DBPORT=3306
+      - DBNAME=db_sample
+      - RHOST=cache
+      - RPORT=6379
+      - RPASSWORD=rpassword
+      - MUSER=root
+      - MPASSWORD=example
+      - MHOST=mongo
+      - MPORT=27017
+    ports:
+      - '8000:8000'
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
