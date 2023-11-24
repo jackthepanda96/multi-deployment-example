@@ -17,6 +17,8 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.key }}
         port: ${{ secrets.PORT }}
+        envs: DBHOST
         script: |
+          echo DBHOST=$DBHOST
           touch tulisan.txt
           echo $DBHOST >> tulisan.txt
