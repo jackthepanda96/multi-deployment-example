@@ -44,5 +44,6 @@ jobs:
           export DBNAME=$DBNAME
           git clone https://github.com/jackthepanda96/multi-deployment-example.git
           cd multi-deployment-example
+          git pull origin main
           docker compose down -v
           docker compose up -d
