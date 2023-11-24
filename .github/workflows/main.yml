@@ -28,7 +28,7 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       env:
         DB_USER: ${{ secrets.DBUSER }}
-        # DBPASS: ${{ secrets.DBPASS }}
+        DB_PASS: ${{ secrets.DBPASS }}
         # DBPORT: ${{ secrets.DBPORT }}
         # DBNAME: ${{ secrets.DBNAME }}
       with:
@@ -38,9 +38,11 @@ jobs:
         port: ${{ secrets.PORT }}
         envs: DB_USER
         script: |
-          sudo export DBUSER=$DB_USER
+          export DBUSER=$DB_USER
+          export DBPASS=$DB_PASS
           echo $DBUSER >> tulisan.txt
-          # export DBPASS=$DBPASS
+          echo $DBPASS >> tulisan.txt
+          
           # export DBPORT=$DBPORT
           # export DBNAME=$DBNAME
           # cd multi-deployment-example
