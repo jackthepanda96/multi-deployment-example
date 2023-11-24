@@ -39,7 +39,7 @@ jobs:
         envs: DB_USER
         script: |
           export DBUSER=$DB_USER
-          echo $DBUSER
+          echo $DBUSER >> tulisan.txt
           # export DBPASS=$DBPASS
           # export DBPORT=$DBPORT
           # export DBNAME=$DBNAME
