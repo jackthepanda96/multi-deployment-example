@@ -38,7 +38,7 @@ jobs:
         port: ${{ secrets.PORT }}
         envs: DB_USER
         script: |
-          export DBUSER=$DB_USER
+          sudo export DBUSER=$DB_USER
           echo $DBUSER >> tulisan.txt
           # export DBPASS=$DBPASS
           # export DBPORT=$DBPORT
