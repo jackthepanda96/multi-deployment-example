@@ -38,10 +38,10 @@ jobs:
         port: ${{ secrets.PORT }}
         envs: DBUSER, DBPASS, DBPORT, DBNAME
         script: |
-          echo DBUSER=$DBUSER
-          echo DBPASS=$DBPASS
-          echo DBPORT=$DBPORT
-          echo DBNAME=$DBNAME
+          export DBUSER=$DBUSER
+          export DBPASS=$DBPASS
+          export DBPORT=$DBPORT
+          export DBNAME=$DBNAME
           git clone https://github.com/jackthepanda96/multi-deployment-example.git
           cd multi-deployment-example
           docker compose down -v
