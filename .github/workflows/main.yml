@@ -11,7 +11,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.0
       env:
-        DBHOST: ${{ secret.DBHOST }}
+        DBHOST: ${{ secrets.DBHOST }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
