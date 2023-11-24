@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"sampleprj/config"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -10,7 +9,8 @@ import (
 )
 
 func InitMongoDB(c config.AppConfig) (*mongo.Client, error) {
-	mongoConnection := fmt.Sprintf("mongodb://%s:%s@%s:%d/", c.MUSER, c.MPASS, c.MHOST, c.MPORT)
+	// mongoConnection := fmt.Sprintf("mongodb://%s:%s@%s:%d/", c.MUSER, c.MPASS, c.MHOST, c.MPORT)
+	mongoConnection := ""
 	mongo, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(mongoConnection))
 
 	if err != nil {
