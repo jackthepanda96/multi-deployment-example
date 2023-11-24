@@ -17,9 +17,6 @@ services:
       - mynet
     ports:
       - '3306:3306'
-    healthcheck:
-      test: ["CMD", "mysql", "-u", ${DBUSER},  "-p"+${DBPASS}, "-e", "show databases;"]
-      interval: 10s 
   # cache:
   #   image: redis:7.2-alpine
   #   environment:
@@ -59,7 +56,7 @@ services:
     image: jerry8287/sampleku
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
         required: true
       # cache:
       #   condition: service_healthy
