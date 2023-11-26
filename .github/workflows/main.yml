@@ -8,22 +8,22 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    # - name: Checkout
-    #   uses: actions/checkout@v4
-    # - name: Login to Docker Hub
-    #   uses: docker/login-action@v3
-    #   with:
-    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v3
-    # - name: Build and push
-    #   uses: docker/build-push-action@v5
-    #   with:
-    #     context: .
-    #     file: ./Dockerfile
-    #     push: true
-    #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleku:latest
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleku:latest
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.0
       env:
@@ -31,22 +31,27 @@ jobs:
         DB_PASS: ${{ secrets.DBPASS }}
         DB_PORT: ${{ secrets.DBPORT }}
         DB_NAME: ${{ secrets.DBNAME }}
+        REDIS_PASS: ${{ secrets.REDISPASS }}
+        REDIS_PORT: ${{ secrets.REDISPORT }}
+        MONGO_USER: ${{ secrets.MONGOUSER }}
+        MONGO_PASS: ${{ secrets.MONGOPASS }}
+        MONGO_PORT: ${{ secrets.MONGOPORT }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.key }}
         port: ${{ secrets.PORT }}
-        envs: DB_USER, DB_PASS, DB_PORT, DB_NAME
+        envs: DB_USER, DB_PASS, DB_PORT, DB_NAME, REDIS_PASS, REDIS_PORT, MONGO_USER, MONGO_PASS, MONGO_PORT
         script: |
           export DBUSER=$DB_USER
           export DBPASS=$DB_PASS
           export DBPORT=$DB_PORT
           export DBNAME=$DB_NAME
-          # echo $DBUSER >> tulisan.txt
-          # echo $DBPASS >> tulisan.txt
-          
-          # export DBPORT=$DBPORT
-          # export DBNAME=$DBNAME
+          export RPASS=$REDIS_PASS
+          export RPORT=$REDIS_PORT
+          export MUSER=$MONGO_USER
+          export MPASS=$MONGO_PASS
+          export MPORT=$MONGO_PORT
           cd multi-deployment-example
           git pull origin main
           docker compose down -v
