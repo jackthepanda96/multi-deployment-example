@@ -61,8 +61,6 @@ services:
       db:
         condition: service_healthy
         required: true
-    env_file:
-      - app.env
       # cache:
       #   condition: service_healthy
       #   required: true
