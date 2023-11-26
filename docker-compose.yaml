@@ -10,13 +10,16 @@ version: '3'
 services:
   db:
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DBPASS}
-      MYSQL_DATABASE: ${DBNAME}
     networks:
       - mynet
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DBPASS
+      - MYSQL_DATABASE=$DBNAME
     ports:
       - '3306:3306'
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "$DBUSER",  "-p$DBPASS", "-e", "show databases;"]
+      interval: 10s
   # cache:
   #   image: redis:7.2-alpine
   #   environment:
@@ -56,8 +59,10 @@ services:
     image: jerry8287/sampleku
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
         required: true
+    env_file:
+      - app.env
       # cache:
       #   condition: service_healthy
       #   required: true
