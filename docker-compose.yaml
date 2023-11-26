@@ -18,7 +18,7 @@ services:
     ports:
       - '3306:3306'
     healthcheck:
-      test: ["CMD", "mysql", "-u", "$DBUSER",  "-p$DBPASS", "-e", "show databases;"]
+      test: ["CMD", "mysql", "-u$DBUSER",  "-p$DBPASS", "-e", "show databases;"]
       interval: 10s
   # cache:
   #   image: redis:7.2-alpine
