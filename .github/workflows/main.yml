@@ -17,14 +17,14 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    - name: Build and push
+    - name: Build and push to docker hub
       uses: docker/build-push-action@v5
       with:
         context: .
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/sampleku:latest
-    - name: executing remote ssh commands using password
+    - name: login server with ssh
       uses: appleboy/ssh-action@v1.0.0
       env:
         DB_USER: ${{ secrets.DBUSER }}
