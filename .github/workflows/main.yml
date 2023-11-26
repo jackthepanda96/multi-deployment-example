@@ -29,23 +29,25 @@ jobs:
       env:
         DB_USER: ${{ secrets.DBUSER }}
         DB_PASS: ${{ secrets.DBPASS }}
-        # DBPORT: ${{ secrets.DBPORT }}
-        # DBNAME: ${{ secrets.DBNAME }}
+        DB_PORT: ${{ secrets.DBPORT }}
+        DB_NAME: ${{ secrets.DBNAME }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.key }}
         port: ${{ secrets.PORT }}
-        envs: DB_USER, DB_PASS
+        envs: DB_USER, DB_PASS, DB_PORT, DB_NAME
         script: |
           export DBUSER=$DB_USER
           export DBPASS=$DB_PASS
-          echo $DBUSER >> tulisan.txt
-          echo $DBPASS >> tulisan.txt
+          export DBPORT=$DB_PORT
+          export DBNAME=$DB_NAME
+          # echo $DBUSER >> tulisan.txt
+          # echo $DBPASS >> tulisan.txt
           
           # export DBPORT=$DBPORT
           # export DBNAME=$DBNAME
-          # cd multi-deployment-example
-          # git pull origin main
-          # docker compose down -v
-          # docker compose up -d
+          cd multi-deployment-example
+          git pull origin main
+          docker compose down -v
+          docker compose up -d
